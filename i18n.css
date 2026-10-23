@@ -1,0 +1,14 @@
+.languages{border:2px solid var(--ink);border-radius:12px;padding:8px 14px;display:flex;gap:24px;align-items:center}
+.languages legend{font-size:13px;padding:0 6px}
+.languages label{display:flex;gap:8px;align-items:center;cursor:pointer}
+.languages input{width:20px;height:20px;accent-color:var(--ink)}
+h1,.qtext,.choice,.btn,.link,.legend span,.lead,.intro p,.res-type,.res-desc,.count small,.note,.alist .t,.toast{white-space:pre-line}
+.lead{letter-spacing:.06em!important}
+.pill{letter-spacing:.04em}
+.yn .btn{font-family:var(--f-body);font-size:22px}
+.count small{overflow-wrap:anywhere}
+.legend{letter-spacing:0}
+.res-type{line-height:1.4}
+.credit{line-height:1.9}
+.credit p{margin:8px 0}
+body{font-family:"Microsoft YaHei",var(--f-body)}
