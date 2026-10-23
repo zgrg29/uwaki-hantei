@@ -97,7 +97,8 @@ details summary{color:var(--ink);font-weight:900;cursor:pointer}
 .qwrap{display:flex;flex-direction:column;gap:14px;animation:pop .18s ease-out}
 </style>
 
-<link rel="stylesheet" href="i18n.css">
+<link rel="preload" href="fonts/resource-rounded-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="i18n.css?v=rounded-1">
 </head>
 <body>
 <div class="wrap">
@@ -112,7 +113,7 @@ details summary{color:var(--ink);font-weight:900;cursor:pointer}
 </div>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="i18n.js"></script>
+<script src="i18n.js?v=rounded-1"></script>
 <script>
 /* ===== ここを書き換えればカスタマイズできます ===== */
 const HASHTAG = "これって浮気判定シート";

@@ -54,14 +54,30 @@ function tr(text, languages = selectedLanguages) {
   if (languages.length === 2) return chinese(text) === text ? text : chinese(text) + '\n' + text;
   return languages[0] === 'zh' ? chinese(text) : text;
 }
-const originalText = new WeakMap();
 function localize(root) {
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-  for (let node; (node=walker.nextNode());) {
-    if (node.parentElement.closest('script,style,textarea,footer,[data-language-controls]')) continue;
-    if (!originalText.has(node)) originalText.set(node, node.nodeValue);
-    node.nodeValue = tr(originalText.get(node));
+  const update = wrapper => {
+    wrapper.replaceChildren();
+    selectedLanguages.forEach((lang,i) => {
+      if(i) wrapper.append(document.createTextNode("\n"));
+      const part = document.createElement('span');
+      part.lang = lang === 'zh' ? 'zh-CN' : 'ja';
+      part.textContent = lang === 'zh' ? chinese(wrapper.i18nSource) : wrapper.i18nSource;
+      wrapper.append(part);
+    });
+  };
+  root.querySelectorAll('[data-i18n-text]').forEach(update);
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), nodes=[];
+  for(let node; (node=walker.nextNode());) {
+    if(node.parentElement.closest('script,style,textarea,footer,[data-language-controls],[data-i18n-text]')) continue;
+    if(chinese(node.nodeValue) !== node.nodeValue) nodes.push(node);
   }
+  nodes.forEach(node => {
+    const wrapper = document.createElement('span');
+    wrapper.dataset.i18nText = '';
+    wrapper.i18nSource = node.nodeValue;
+    update(wrapper);
+    node.replaceWith(wrapper);
+  });
   const footer = root.querySelector('footer');
   if (footer) footer.innerHTML = selectedLanguages.map(lang => lang === 'zh'
     ? '<p lang="zh-CN">题目来源：健屋花那（<a href="https://x.com/sukosuko_sukoya/status/2107121927278166034" target="_blank" rel="noopener">原帖</a>）的《这算出轨吗？判定问卷》，本页面据此制作<br>原表设计：ありあ（<a href="https://x.com/air_trpg" target="_blank" rel="noopener">@air_trpg</a>）</p>'
@@ -78,7 +94,7 @@ function initLanguages() {
   QUESTIONS.forEach((q,i) => { ZH[q] = ZH_QUESTIONS[i]; });
   const controls = document.createElement('fieldset');
   controls.className = 'languages'; controls.dataset.languageControls = '';
-  controls.innerHTML = '<legend>语言 / 言語</legend><label><input type="checkbox" value="zh"> 中文</label><label><input type="checkbox" value="ja"> 日本語</label>';
+  controls.innerHTML = '<legend>语言 / 言語</legend><label lang="zh-CN"><input type="checkbox" value="zh"> 中文</label><label lang="ja"><input type="checkbox" value="ja"> 日本語</label>';
   document.querySelector('.wrap').prepend(controls);
   function sync() {
     controls.querySelectorAll('input').forEach(input => {
@@ -100,13 +116,16 @@ async function drawCard(r) {
   const langs = [...selectedLanguages], answers = [...state.a], yn = state.yn;
   const cv = document.createElement('canvas'); cv.width = 1200; cv.height = 2200;
   const g = cv.getContext('2d'), pink='#d61fa3', paper='#e4e5e8';
-  try { await document.fonts.ready; } catch (_) {}
+  try {
+    await Promise.all([500,700,900].map(w => document.fonts.load(`${w} 28px "Resource Rounded"`, '这算出轨吗完全可以接受')));
+    await document.fonts.ready;
+  } catch (_) {}
   g.fillStyle=paper; g.fillRect(0,0,cv.width,cv.height);
   g.fillStyle=pink; g.fillRect(35,35,12,cv.height-70); g.fillRect(1153,35,12,cv.height-70);
   g.textAlign='center'; g.textBaseline='top';
   let y=65;
   function line(text,size,color=pink) {
-    g.font=`700 ${size}px "Microsoft YaHei","Noto Sans CJK SC","Yu Gothic",sans-serif`; g.fillStyle=color;
+    g.font=`700 ${size}px "Resource Rounded","Zen Maru Gothic",sans-serif`; g.fillStyle=color;
     for (const part of tr(text,langs).split('\n')) {
       let row='';
       for (const ch of part) {
@@ -126,7 +145,7 @@ async function drawCard(r) {
   LABELS.forEach((label,k) => {
     const x=90+k*345; g.strokeStyle=pink; g.lineWidth=4; g.strokeRect(x,cy,330,190);
     g.fillStyle=pink; g.font='bold 72px sans-serif'; g.fillText(String(r.c[k]),x+165,cy+12);
-    g.font='bold 21px "Microsoft YaHei","Yu Gothic",sans-serif';
+    g.font='bold 21px "Resource Rounded","Zen Maru Gothic",sans-serif';
     tr(label,langs).split('\n').forEach((part,j)=>g.fillText(part,x+165,cy+115+j*34,312));
   });
   y+=225;

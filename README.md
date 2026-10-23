@@ -26,3 +26,5 @@
 出典: 健屋花那さん（[@sukosuko_sukoya のポスト](https://x.com/sukosuko_sukoya/status/2107121927278166034)）の「これって浮気？判定シート」をもとに作成しています。
 
 シートデザイン: ありあさん（[@air_trpg](https://x.com/air_trpg)）
+
+中文使用随站加载的资源圆体（500 / 700 / 900），匹配原版圆润粗体风格；日语保留原版字体。字体来源及许可见 [fonts/README.md](fonts/README.md)。

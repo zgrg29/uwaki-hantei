@@ -11,4 +11,16 @@ h1,.qtext,.choice,.btn,.link,.legend span,.lead,.intro p,.res-type,.res-desc,.co
 .res-type{line-height:1.4}
 .credit{line-height:1.9}
 .credit p{margin:8px 0}
-body{font-family:"Microsoft YaHei",var(--f-body)}
+/* Local Chinese fonts prevent per-character fallback on iOS and Android. */
+@font-face{font-family:"Resource Rounded";src:url("fonts/resource-rounded-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Resource Rounded";src:url("fonts/resource-rounded-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Resource Rounded";src:url("fonts/resource-rounded-900.woff2") format("woff2");font-weight:900;font-style:normal;font-display:swap}
+:root{--f-body:"Zen Maru Gothic","Resource Rounded",sans-serif}
+html:lang(zh-CN){--f-body:"Resource Rounded","Zen Maru Gothic",sans-serif}
+body{font-family:var(--f-body)}
+span[lang="zh-CN"],label:lang(zh-CN),.credit p:lang(zh-CN){font-family:"Resource Rounded","Zen Maru Gothic",sans-serif}
+span[lang="ja"],label:lang(ja),.credit p:lang(ja){font-family:"Zen Maru Gothic","Resource Rounded",sans-serif}
+h1 span[lang="zh-CN"],.res-type span[lang="zh-CN"]{font-weight:900}
+h1 span[lang="ja"],.res-type span[lang="ja"]{font-family:var(--f-display);font-weight:400}
+.choice{font-weight:900}
+.qtext{font-weight:700}
